@@ -15,33 +15,51 @@ class Message extends Component {
 }
 
 class MessageBox extends Component {
+
+
+
   constructor(props) {
     super(props);
 
-    this.pass = "";
-    this.nick = "bad_hombres";
-    this.channel = "jumpystick";
-    this.socket = new WebSocket("ws://irc-ws.chat.twitch.tv:80", "irc");
-    this.socket.onopen = () => {
-      this.socket.send("CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership");
-      this.socket.send(`PASS ${this.pass}`);
-      this.socket.send(`NICK ${this.nick}`);
-      this.socket.send(`USER ${this.nick} 8 * :${this.nick}`)
-      this.socket.send(`JOIN #${this.channel}`);
-      console.log("opened");
+    this.config = {
+      pass : "",
+      nick : "bad_hombres",
+      channel : "jumpystick",
+      URI : "ws://irc-ws.chat.twitch.tv:80",
     };
 
-    this.socket.onerror = (e) => {
-      console.log(e);
-    };
+    this.socket = new WebSocket(this.config.URI, "irc");
 
+    // When the socket open, send the messages to log into the IRC channel
+    this.socketOpen = this.socketOpen.bind(this);
+    this.socket.onopen = this.socketOpen;
+
+    // Lets track errors
+    this.socketError = this.socketError.bind(this);
+    this.socket.onerror = this.socketError;
+
+    // Add the message function where it updates the state
     this.addMessage = this.addMessage.bind(this);
     this.socket.onmessage = this.addMessage;
 
-
+    // Initialize the state variable to begin adding messages to it
     this.state = {
       messages: [] 
     }
+  }
+
+
+  socketOpen() {
+      this.socket.send("CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership");
+      this.socket.send(`PASS ${this.config.pass}`);
+      this.socket.send(`NICK ${this.config.nick}`);
+      this.socket.send(`USER ${this.config.nick} 8 * :${this.config.nick}`)
+      this.socket.send(`JOIN #${this.config.channel}`);
+      console.log("opened");
+  }
+  // TODO: Should figure out what to do once I know all the errors
+  socketError(err) {
+    console.log("Error: ", err);
   }
 
   addMessage(data) {
