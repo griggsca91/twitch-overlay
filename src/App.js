@@ -62,7 +62,19 @@ class MessageBox extends Component {
     console.log("Error: ", err);
   }
 
+  
+  /**
+   * 
+   * 
+   * @param {string} data 
+   * @memberof MessageBox
+   */
   addMessage(data) {
+
+    if (!data.data.includes("PRIVMSG")) {
+      return;
+    }
+    
     this.setState((prevState) => {
       let messages = prevState.messages;
 
