@@ -5,19 +5,20 @@
 */
 
 
-export function formatChatMessage(msg) {
+export function parseChatMessage(msg) {
 
     if (msg.search(".*PRIVMSG.*:.*") === -1) {
-        return ""
+        return null 
     }
 
-    let matches = msg.match(/.*@(.*)\.tmi\.twitch\.tv PRIVMSG #.* :(.*)/);
+    let matches = msg.match(/.*@(.*)\.tmi\.twitch\.tv PRIVMSG #\S* :(.*)/);
     
-    if (matches.length !== 3) {
-        return ""
+    if (matches.length != 3) {
+        return null 
     }    
 
 
     
-    return `${matches[1]} :  ${matches[2]}`; 
+    return { userName: matches[1],
+        message: matches[2]}; 
 }

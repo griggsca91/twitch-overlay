@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import MessageBox from './components/MessageBox.js';
-import { formatChatMessage } from './Utils.js';
+import { parseChatMessage } from './Utils.js';
 import Message from './components/Message.js';
 
 
@@ -13,7 +13,7 @@ class App extends Component {
     this.config = {
       pass : "",
       nick : "bad_hombres",
-      channel : "jumpystick",
+      channel : "bad_hombres",
       URI : "ws://irc-ws.chat.twitch.tv:80",
     };
 
@@ -64,9 +64,9 @@ class App extends Component {
 
   addMessage(message) {
 
-    let content = formatChatMessage(message);
+    let content = parseChatMessage(message);
 
-    if (!content.length) {
+    if (!content) {
         return;
     }    
 
@@ -80,7 +80,8 @@ class App extends Component {
         }
         messages.push(<Message
             key={messageCount}
-            content={content} />);
+            userName={content.userName}
+            message={content.message} />);
 
         return {
             messages: messages,
