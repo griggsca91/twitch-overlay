@@ -2,15 +2,11 @@
 .MessageBox {
     width: 20%;
     float: right;
+    margin: 25px;
 }
 
 .MessageBox ul {
   margin: 0;
   padding: 0; 
   list-style: none;
-}
-
-.MessageBox ul li {
-    margin: 0; 
-    padding: 0;
 }

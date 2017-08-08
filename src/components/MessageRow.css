@@ -1,0 +1,8 @@
+.MessageRow {
+    margin: 5px;
+    background: rgba(255, 165, 0, .4);
+}
+
+.MessageRow p {
+    padding: 5px;
+}

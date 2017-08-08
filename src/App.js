@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import MessageBox from './components/MessageBox.js';
 import { parseChatMessage } from './Utils.js';
-import Message from './components/Message.js';
-
+import MessageRow from './components/MessageRow.js';
+import { Config } from './Config.js';
 
 class App extends Component {
 
@@ -11,7 +11,7 @@ class App extends Component {
     super(props);
 
     this.config = {
-      pass : "",
+      pass : Config.oauth,
       nick : "bad_hombres",
       channel : "bad_hombres",
       URI : "ws://irc-ws.chat.twitch.tv:80",
@@ -75,10 +75,10 @@ class App extends Component {
         let messageCount = prevState.messageCount;
     
         
-        if (messages.length >= 10) {
+        if (messages.length >= 5) {
             messages.shift();
         }
-        messages.push(<Message
+        messages.push(<MessageRow
             key={messageCount}
             userName={content.userName}
             message={content.message} />);
